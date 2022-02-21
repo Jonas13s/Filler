@@ -1,32 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strisnumeric.c                                  :+:      :+:    :+:   */
+/*   additional.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: joivanau <joivanau@hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/12 18:22:15 by joivanau          #+#    #+#             */
-/*   Updated: 2022/02/20 16:25:54 by joivanau         ###   ########.fr       */
+/*   Created: 2022/02/20 22:36:29 by joivanau          #+#    #+#             */
+/*   Updated: 2022/02/21 03:36:56 by joivanau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "filler.h"
 
-int	ft_strisnumeric(char *s)
+void	ft_free2d(char **str)
+{
+	int	i;
+
+	i = 0;
+	while(str[i])
+	{
+		ft_strdel(&str[i]);
+		i++;
+	}
+	//free(str);
+}
+
+int	ft_str_valid(char *str, char *symbols)
 {
 	size_t	i;
 
 	i = 0;
-	if (s == NULL)
-		return (0);
-	while (s[i] != '\0')
+	while (str[i])
 	{
-		if (ft_isdigit(s[i]) == 1)
-			i++;
-		else
-			break ;
+		if (!ft_strchr(symbols, str[i]))
+			return (0);
+		i++;
 	}
-	if (s[i] == '\0')
-		return (1);
-	return (0);
+	return (1);
 }

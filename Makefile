@@ -1,6 +1,6 @@
 NAME = joivanau.filler
 
-SRCS = main.c
+SRCS = main.c board.c additional.c piece.c heat_map.c
 
 SRC_DIR = src/
 
