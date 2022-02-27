@@ -6,7 +6,7 @@
 /*   By: joivanau <joivanau@hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/21 00:41:48 by joivanau          #+#    #+#             */
-/*   Updated: 2022/02/21 02:54:36 by joivanau         ###   ########.fr       */
+/*   Updated: 2022/02/27 20:13:26 by joivanau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,10 @@ void	do_heat(t_map *board)
 			while(x < board->w)
 			{
 				if (board->heat_map[y][x] == DE)
+				{
 					fill_heat(board, x, y, i);
+					//printf("%d\n", board->heat_map[y][x]);
+				}
 				x++;
 			}
 			x = 0;
@@ -110,7 +113,7 @@ static int	filling_heat_map(t_map *board, int y)
 	{
 		if (board->map[y][x] == '.')
 			board->heat_map[y][x] = DE;
-		if (board->map[y][x] == board->my_letter)
+		if (board->map[y][x] == board->my_letter || board->map[y][x] == ft_tolower(board->my_letter))
 			board->heat_map[y][x] = ME;
 		if (board->map[y][x] == board->enem_letter)
 			board->heat_map[y][x] = ENEM;

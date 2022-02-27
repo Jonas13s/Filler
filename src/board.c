@@ -6,7 +6,7 @@
 /*   By: joivanau <joivanau@hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/20 22:35:26 by joivanau          #+#    #+#             */
-/*   Updated: 2022/02/20 23:51:23 by joivanau         ###   ########.fr       */
+/*   Updated: 2022/02/22 00:43:42 by joivanau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,12 +25,12 @@ int	get_board_size(t_map *board)
 	if (ft_strcmp("Plateau", board_size[0]) || !ft_strisnumeric(board_size[1])
 	|| !ft_isdigit(board_size[2][0]) || board_size[3])
 	{
-		ft_free2d(board_size);
+		ft_free2d((void **)board_size);
 		return (0); // kill here
 	}
 	board->h = ft_atoi(board_size[1]);
 	board->w = ft_atoi(board_size[2]);
-	ft_free2d(board_size);
+	ft_free2d((void **)board_size);
 	return (1);
 }
 
@@ -53,11 +53,11 @@ int	get_board(t_map *board)
 		if (get_next_line(0, &line) <= 0)
 			return (0); // kill here
 		board->map[i] = ft_strsub(line, 4, board->w);
+		ft_strdel(&line);
 		if (ft_strlen(board->map[i]) != (size_t)(board->w))
 			return (0); // kill here
 		if (!ft_str_valid(board->map[i], ".oOxX"))
 			return (0); // kill here
-		ft_strdel(&line);
 		i++;
 	}
 	return (1);

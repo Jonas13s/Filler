@@ -30,102 +30,214 @@ int	which_player(t_map *board)
 		return (0); // kill here
 	return (1);
 }
-
-int result(t_map *board, t_piece *piece, int y, int x, int i, int j)
+/* checking boundaries */
+int	piece_start(t_piece *piece, int *y, int *x)
 {
-	int score;
-	int tempy;
-	int	tempx;
-
-	tempy = 0;
-	tempx = 0;
-	score = 0;
-	(void)x;
-	(void)y;
-	(void)board;
-	//printf("start:%d %d\n", i, j);
-	while(tempy < piece->h)
+	if (piece->star == 1)
 	{
-		while(tempx < piece->w)
+		piece->star = 0;
+		if (*x + 1 < piece->w)
+			(*x)++;
+		else if (*y + 1 < piece->h)
 		{
-			if (piece->pc[tempy][tempx] == '*' && (i != tempy || j != tempx))
-			{
-				//printf("%d %d\n", tempy, tempx);
-				score += board->heat_map[y - i + tempy][x - j + tempx];
-			}
-			tempx++;
+			(*y)++;
+			*x = 0;
 		}
-		tempx = 0;
-		tempy++;
+		else
+			return (0);
 	}
-	//printf("score: %d\n\n", score);
-	return (score);
-}
-
-int	scoring(t_map *board, t_piece *piece, int y, int x)
-{
-	int	i;
-	int	j;
-	int	score;
-	int	best[4];
-
-	best[0] = 0; // x
-	best[1] = 0; // y
-	best[2] = 0; // score
-	score = 0;
-	i = 0;
-	j = 0;
-	while(i < piece->h)
-	{
-		while(j < piece->w)
-		{
-			if (piece->pc[i][j] == '*')
-			{
-				score = result(board,piece, y, x, i , j);
-				if (best[2] == 0)
-				{
-					best[0] = x;
-					best[1] = y;
-					best[2] = score;
-				}
-				if (best[2] > score)
-				{
-					best[0] = x;
-					best[1] = y;
-					best[2] = score;
-				}
-			}
-			j++;
-		}
-		j = 0;
-		i++;
-	}
-	ft_putnbr(best[1]);
-	ft_putchar(' ');
-	ft_putnbr(best[0]);
-	ft_putchar('\n');
-	//printf("x:%d y:%d score:%d\n", best[0], best[1], best[2]);
 	return (1);
 }
 
-int count_score(t_map *board, t_piece *piece)
+int	piece_search(t_piece *piece, int *y, int *x)
 {
-	int	x;
-	int	y;
+	if (piece_start(piece, y, x) == 0)
+		return (0);
+	if (*x == 0 && *y == 0 && piece->pc && piece->pc[*y][*x] == '*')
+	{
+		piece->star = 1;
+		return (1);
+	}
+	while(*y < piece->h)
+	{
+		while(*x < piece->w)
+		{
+			if (piece->pc && piece->pc[*y][*x] == '*')
+			{
+				piece->star = 1;
+				return (1);
+			}
+			(*x)++;
+		}
+		*x = 0;
+		(*y)++;
+	}
+	return (0);
+}
+/*	counting score first is checking boundaries 
+second is checking if the xy space is not taken by me or enemy
+last one is counting how effective it would be */
+int possible_point(t_map *b, int y, int x, int *score)
+{
+	if (b->mainy + y - b->tempy < 0 || b->mainy + y - b->tempy >= b->h || b->mainx + x - b->tempx < 0 || b->mainx + x - b->tempx >= b->w)
+		return (1);
+	if (b->heat_map[b->mainy + y - b->tempy][b->mainx + x - b->tempx] == ENEM || 
+			b->heat_map[b->mainy + y - b->tempy][b->mainx + x - b->tempx] == ME)
+	{
+		if (y != b->tempy || x != b->tempx)
+			return (1);
+	}
+	if (b->heat_map[b->mainy + y - b->tempy][b->mainx + x - b->tempx] != ME)
+	{
+		//printf("score: %d %d\n", b->mainy + y - b->tempy, b->mainx + x - b->tempx);
+		*score += b->heat_map[b->mainy + y - b->tempy][b->mainx + x - b->tempx];
+	}
+	//printf("%d\n", *score);
+	return (0);
+}
+/* counting score going backwards */
 
-	x = 0;
+int	result_back(t_map *b, t_piece *piece, int y, int x, int *score)
+{
+	b->tempy = y;
+	b->tempx = x;
+	while(y >= 0)
+	{
+		while(x >= 0)
+		{
+			if (piece->pc[y][x] == '*')
+			{
+				if (possible_point(b, y, x, score) == 1)
+					return (1);
+			}
+			x--;
+		}
+		y--;
+		x = piece->w - 1;	
+	}
+	return (0);
+}
+/* counting score going forward */
+
+int	result_forward(t_map *b, t_piece *piece, int y, int x, int *score)
+{
+	b->tempy = y;
+	b->tempx = x;
+	while(y < piece->h)
+	{
+		while(x < piece->w)
+		{
+			if (piece->pc[y][x] == '*')
+			{
+				if (possible_point(b, y, x, score) == 1)
+					return (1);
+			}
+			x++;
+		}
+		y++;
+		x = 0;
+	}
+	return (0);
+}
+
+/* score set if it's bigger after every run */
+void	score_set(t_map *b, int score)
+{
+	//printf("main: %d %d x: %d %d %d\n",b->mainy, b->mainx,  b->y, b->x, score);
+	if (b->moves == 1)
+	{
+		if ((score < b->score && score > 0) || (b->score == 0))
+		{
+			b->score = score;
+			b->sy = b->mainy - b->y;
+			b->sx = b->mainx - b->x;
+		}
+	}
+	else
+	{
+		if (score < b->score || b->score == 0)
+		{
+			b->score = score;
+			b->sy = b->mainy - b->y;
+			b->sx = b->mainx - b->x;
+		}
+	}
+}
+
+int	scoring(t_map *board, t_piece *piece)
+{
+	int	score;
+
+	board->y = 0;
+	board->x = 0;
+	while(piece_search(piece, &board->y, &board->x))
+	{
+		score = 0;
+		//board->sy = board->y;
+		//board->sx = board->x;
+		if (result_back(board, piece, board->y, board->x, &score) == 0 &&
+				result_forward(board, piece, board->y, board->x, &score) == 0)
+		{
+			//printf("score %d\n", score);
+			score_set(board, score);
+		}
+	}
+	/*if(best[2] != 0)
+	{
+		ft_putnbr(best[1]);
+		ft_putchar(' ');
+		ft_putnbr(best[0]);
+		ft_putchar('\n');
+	}*/
+	//printf("x:%d y:%d score:%d\n", board->sx, board->sy, board->score);
+	return (1);
+}
+
+void	have_moves(t_map *board)
+{
+	int	y;
+	int	x;
+
 	y = 0;
+	x = 0;
+	board->moves = 0;
 	while(y < board->h)
 	{
 		while(x < board->w)
 		{
-			if (board->heat_map[y][x] == ME)
-				scoring(board, piece, y, x);
+			if (board->heat_map[y][x] > 0)
+				board->moves = 1;
 			x++;
 		}
 		x = 0;
 		y++;
 	}
+}
+
+int count_score(t_map *board, t_piece *piece)
+{
+	board->mainy = 0;
+	board->mainx = 0;
+	board->score = 0;
+	have_moves(board);
+	while(board->mainy < board->h)
+	{
+		while(board->mainx < board->w)
+		{
+			if (board->heat_map[board->mainy][board->mainx] == ME)
+			{
+				scoring(board, piece);
+				//printf("x:%d y:%d score:%d\n", board->mainx, board->mainy, board->score);
+			}
+			board->mainx++;
+		}
+		board->mainx = 0;
+		board->mainy++;
+	}
+		ft_putnbr(board->sy);
+		ft_putchar(' ');
+		ft_putnbr(board->sx);
+		ft_putchar('\n');
 	return (1);
 }
 /*
@@ -136,34 +248,35 @@ int	data(t_map *board, t_piece *piece)
 {
 	if (!board->my_letter)
 		which_player(board);
-	get_board(board);
+	if (!board->my_letter)
+		return (0);
+	if(!get_board(board))
+		return (0);
+	get_piece(piece);
 	create_heat_map(board);
 	init_heat(board);
-	get_piece(piece);
 	do_heat(board);
 	count_score(board,piece);
-	return (0);
+	return (1);
 }
 
 int main()
 {
-	t_map	*board;
-	t_piece	*piece;
+	t_map	board;
+	t_piece	piece;
 
-	piece = (t_piece *) malloc(sizeof(t_piece));
-	board = (t_map *) malloc(sizeof(t_map));
+	ft_bzero(&board, sizeof(board));
+	ft_bzero(&piece, sizeof(piece));
 	while(1)
 	{
-		data(board, piece);
-		ft_free2d(board->map);
-		ft_free2d(board->heat_map);
-		ft_free2d(piece->pc);
+		if(!data(&board, &piece))
+			return (0);
+		free_piece(&piece);
+		free_heat_map(&board);
+		free_map(&board);
 	}
-	/*int y = 0;
-	while(y < board->h)
-	{
-		printf("%s\n", board->heat_map[y]);
-		y++;
-	}*/
+	char *line;
+	get_next_line(0, &line);
+	ft_strdel(&line);
 	return (0);
 }

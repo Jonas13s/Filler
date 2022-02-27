@@ -6,7 +6,7 @@
 /*   By: joivanau <joivanau@hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/17 14:05:39 by joivanau          #+#    #+#             */
-/*   Updated: 2021/12/14 02:29:13 by joivanau         ###   ########.fr       */
+/*   Updated: 2022/02/27 23:12:41 by joivanau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ static char	*get_first_line(char *sbuf, char **line, int *error)
 		i++;
 	if (i > 0)
 	{
-		ft_strdel(line);
 		*line = ft_strsub(sbuf, 0, i);
 		*error = 1;
 	}
@@ -77,7 +76,6 @@ int	get_next_line(const int fd, char **line)
 	if (line == NULL || fd < 0 || BUFF_SIZE <= 0 || fd > MAX_FD \
 	|| fd == 1 || fd == 2)
 		return (-1);
-	*line = ft_strdup("");
 	if (!sbuf[fd])
 		sbuf[fd] = ft_strdup("");
 	if (!sbuf[fd])
