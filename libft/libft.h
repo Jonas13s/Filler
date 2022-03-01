@@ -6,7 +6,7 @@
 /*   By: joivanau <joivanau@hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/29 12:38:11 by joivanau          #+#    #+#             */
-/*   Updated: 2022/03/01 17:17:59 by joivanau         ###   ########.fr       */
+/*   Updated: 2022/03/01 23:09:28 by joivanau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,7 @@ void	*ft_calloc(size_t nmemb, size_t size);
 char	*ft_strupdate(char *s1, const char *s2);
 int		get_next_line(const int fd, char **line);
 void	ft_free2d(void **str);
+int		ft_printf(const char *format, ...);
 /*	BONUS	*/
 t_list	*ft_lstnew(void const *content, size_t content_size);
 void	ft_lstdelone(t_list **alst, void (*del)(void*, size_t));

@@ -6,7 +6,7 @@
 #    By: joivanau <joivanau@hive.fi>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/01 14:55:31 by joivanau          #+#    #+#              #
-#    Updated: 2022/03/01 17:17:43 by joivanau         ###   ########.fr        #
+#    Updated: 2022/03/01 23:21:42 by joivanau         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,14 +24,21 @@ ft_strisprintable.c ft_isblank.c ft_strisalpha.c ft_calloc.c ft_strupdate.c get_
 ft_free2d.c
 
 LIBRARY = $(FILES:.c=.o)
-
+OBJ_DIR = obj/
+FT_PRINTF_PATH = ft_printf/
 all: $(NAME)
 
 $(NAME):
 	@cc -Wall -Wextra -Werror -c $(FILES)
 	@ar rc $(NAME) $(LIBRARY)
+	@make -C $(FT_PRINTF_PATH)
+	@rm -rf $(NAME)
+	@mv $(FILES:.c=.o) $(OBJ_DIR)
+	@ar rc $(NAME) $(OBJ_DIR)*.o
 clean:
 	@rm -rf $(LIBRARY)
+	@make -C $(FT_PRINTF_PATH) clean
 fclean: clean
 	@rm -rf $(NAME)
+	@make -C $(FT_PRINTF_PATH) fclean
 re: fclean all

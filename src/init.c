@@ -6,39 +6,11 @@
 /*   By: joivanau <joivanau@hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/01 17:09:44 by joivanau          #+#    #+#             */
-/*   Updated: 2022/03/01 17:24:23 by joivanau         ###   ########.fr       */
+/*   Updated: 2022/03/02 01:53:04 by joivanau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "filler.h"
-
-void	init_struct_piece(t_piece *f)
-{
-	f->pc = NULL;
-	f->w = 0;
-	f->h = 0;
-	f->star = 0;
-}
-
-void	init_struct_map(t_map *f)
-{
-	f->map = NULL;
-	f->heat_map = NULL;
-	f->my_letter = 0;
-	f->enem_letter = 0;
-	f->w = 0;
-	f->h = 0;
-	f->sy = 0;
-	f->sx = 0;
-	f->y = 0;
-	f->x = 0;
-	f->tempy = 0;
-	f->tempx = 0;
-	f->mainy = 0;
-	f->mainx = 0;
-	f->score = 0;
-	f->moves = 0;
-}
 
 int	ft_str_valid(char *str, char *symbols)
 {
@@ -92,4 +64,34 @@ void	init_heat(t_map *board)
 		x = 0;
 		y++;
 	}
+}
+
+/* Getting info for which player I'm it's gonna be ran
+only once at the start of the game when the VM is called */
+int	which_player(t_map *board)
+{
+	char	*line;
+	char	*pos;
+	char	c;
+
+	if (get_next_line(0, &line) <= 0)
+		return (free_data_error(NULL, NULL, "Allocation failed\n"));
+	pos = ft_strchr(line, 'p') + 1;
+	c = *pos;
+	ft_strdel(&line);
+	if (c == '1')
+	{
+		board->my_letter = 'O';
+		board->enem_letter = 'X';
+		return (1);
+	}
+	else if (c == '2')
+	{
+		board->my_letter = 'X';
+		board->enem_letter = 'O';
+		return (1);
+	}
+	else
+		return (free_data_error(NULL, NULL, "No player detected\n"));
+	return (1);
 }

@@ -6,12 +6,14 @@
 /*   By: joivanau <joivanau@hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/21 00:41:48 by joivanau          #+#    #+#             */
-/*   Updated: 2022/03/01 18:00:34 by joivanau         ###   ########.fr       */
+/*   Updated: 2022/03/02 01:06:27 by joivanau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "filler.h"
 
+/*	Filling map in basically checking everything around and
+just making it bigger if it's more far away from the enemy	*/
 static void	fill_heat(t_map *b, int x, int y, int i)
 {
 	if (x + 1 < b->w && b->heat_map[y][x + 1] == i)
@@ -32,32 +34,33 @@ static void	fill_heat(t_map *b, int x, int y, int i)
 		b->heat_map[y][x] = i + 1;
 }
 
+/*	Checking map row by row and increasing
+their value by using fill_heat()
+DE = empty box	*/
 void	do_heat(t_map *board)
 {
 	int	x;
 	int	y;
 	int	i;
 
-	i = 1;
-	while (i < board->w)
+	i = 0;
+	while (++i < board->w)
 	{
-		y = 0;
-		x = 0;
-		while (y < board->h)
+		y = -1;
+		while (++y < board->h)
 		{
-			while (x < board->w)
+			x = -1;
+			while (++x < board->w)
 			{
 				if (board->heat_map[y][x] == DE)
 					fill_heat(board, x, y, i);
-				x++;
 			}
-			x = 0;
-			y++;
 		}
-		i++;
 	}
 }
 
+/*	Filling heat_map if it's dot its gonna be DE(empty)
+or ME(mine) also ENEM(taken) this is only for one row	*/
 static int	filling_heat_map(t_map *board, int y)
 {
 	int	x;
@@ -68,8 +71,8 @@ static int	filling_heat_map(t_map *board, int y)
 		if (board->map[y][x] == '.')
 			board->heat_map[y][x] = DE;
 		if (board->map[y][x] == board->my_letter ||
-			board->map[y][x] == ft_tolower(board->my_letter))
-		board->heat_map[y][x] = ME;
+				board->map[y][x] == ft_tolower(board->my_letter))
+			board->heat_map[y][x] = ME;
 		if (board->map[y][x] == board->enem_letter)
 			board->heat_map[y][x] = ENEM;
 		x++;
@@ -77,6 +80,9 @@ static int	filling_heat_map(t_map *board, int y)
 	return (1);
 }
 
+/*	allocating also filling heat map
+this passes row to filling_heat_map() which then assigns data
+using map that was given from VM	*/
 int	create_heat_map(t_map *board, t_piece *piece)
 {
 	int	y;

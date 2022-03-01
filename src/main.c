@@ -1,79 +1,5 @@
 #include <filler.h>
-/*
-in which player when else it should kill whole filler because player is invalid
-*/
-int	which_player(t_map *board)
-{
-	char	*line;
-	char	*pos;
-	char 	c;
 
-	if(get_next_line(0, &line) <= 0)
-		return (0);
-	pos = ft_strchr(line, 'p');
-	pos++;
-	c = *pos;
-	ft_strdel(&line);
-	if (c == '1')
-	{
-		board->my_letter = 'O';
-		board->enem_letter = 'X';
-		return (1);
-	}
-	else if (c == '2')
-	{
-		board->my_letter = 'X';
-		board->enem_letter = 'O';
-		return (1);
-	}
-	else
-		return (0); // kill here
-	return (1);
-}
-/* checking boundaries */
-int	piece_start(t_piece *piece, int *y, int *x)
-{
-	if (piece->star == 1)
-	{
-		piece->star = 0;
-		if (*x + 1 < piece->w)
-			(*x)++;
-		else if (*y + 1 < piece->h)
-		{
-			(*y)++;
-			*x = 0;
-		}
-		else
-			return (0);
-	}
-	return (1);
-}
-
-int	piece_search(t_piece *piece, int *y, int *x)
-{
-	if (piece_start(piece, y, x) == 0)
-		return (0);
-	if (*x == 0 && *y == 0 && piece->pc && piece->pc[*y][*x] == '*')
-	{
-		piece->star = 1;
-		return (1);
-	}
-	while(*y < piece->h)
-	{
-		while(*x < piece->w)
-		{
-			if (piece->pc && piece->pc[*y][*x] == '*')
-			{
-				piece->star = 1;
-				return (1);
-			}
-			(*x)++;
-		}
-		*x = 0;
-		(*y)++;
-	}
-	return (0);
-}
 /*	counting score first is checking boundaries 
 second is checking if the xy space is not taken by me or enemy
 last one is counting how effective it would be */
@@ -89,14 +15,11 @@ int possible_point(t_map *b, int y, int x, int *score)
 	}
 	if (b->heat_map[b->mainy + y - b->tempy][b->mainx + x - b->tempx] != ME)
 	{
-		//printf("score: %d %d\n", b->mainy + y - b->tempy, b->mainx + x - b->tempx);
 		*score += b->heat_map[b->mainy + y - b->tempy][b->mainx + x - b->tempx];
 	}
-	//printf("%d\n", *score);
 	return (0);
 }
 /* counting score going backwards */
-
 int	result_back(t_map *b, t_piece *piece, int y, int x, int *score)
 {
 	b->tempy = y;
@@ -140,12 +63,13 @@ int	result_forward(t_map *b, t_piece *piece, int y, int x, int *score)
 	return (0);
 }
 
-/* score set if it's bigger after every run */
+/* if counted score is less than current score
+we assign it because less score means it's closer to enemy*/
 void	score_set(t_map *b, int score)
 {
 	if (b->moves == 1)
 	{
-		if ((score < b->score && score > 0) || (b->score == 0))
+		if ((score <= b->score && score > 0) || (b->score == 0))
 		{
 			b->score = score;
 			b->sy = b->mainy - b->y;
@@ -169,7 +93,7 @@ int	scoring(t_map *board, t_piece *piece)
 
 	board->y = 0;
 	board->x = 0;
-	while(piece_search(piece, &board->y, &board->x))
+	while (piece_search(piece, &board->y, &board->x))
 	{
 		score = 0;
 		if (result_back(board, piece, board->y, board->x, &score) == 0 &&
@@ -252,7 +176,7 @@ int main()
 	{
 		if(!data(&board, &piece))
 			return (0);
-		print_cords(board.sx, board.sy);
+		ft_printf("%d %d\n", board.sy, board.sx);
 		free_data(&board, &piece);
 	}
 	return (0);
