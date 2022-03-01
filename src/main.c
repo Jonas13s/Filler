@@ -143,7 +143,6 @@ int	result_forward(t_map *b, t_piece *piece, int y, int x, int *score)
 /* score set if it's bigger after every run */
 void	score_set(t_map *b, int score)
 {
-	//printf("main: %d %d x: %d %d %d\n",b->mainy, b->mainx,  b->y, b->x, score);
 	if (b->moves == 1)
 	{
 		if ((score < b->score && score > 0) || (b->score == 0))
@@ -173,23 +172,10 @@ int	scoring(t_map *board, t_piece *piece)
 	while(piece_search(piece, &board->y, &board->x))
 	{
 		score = 0;
-		//board->sy = board->y;
-		//board->sx = board->x;
 		if (result_back(board, piece, board->y, board->x, &score) == 0 &&
 				result_forward(board, piece, board->y, board->x, &score) == 0)
-		{
-			//printf("score %d\n", score);
 			score_set(board, score);
-		}
 	}
-	/*if(best[2] != 0)
-	{
-		ft_putnbr(best[1]);
-		ft_putchar(' ');
-		ft_putnbr(best[0]);
-		ft_putchar('\n');
-	}*/
-	//printf("x:%d y:%d score:%d\n", board->sx, board->sy, board->score);
 	return (1);
 }
 
@@ -225,19 +211,12 @@ int count_score(t_map *board, t_piece *piece)
 		while(board->mainx < board->w)
 		{
 			if (board->heat_map[board->mainy][board->mainx] == ME)
-			{
 				scoring(board, piece);
-				//printf("x:%d y:%d score:%d\n", board->mainx, board->mainy, board->score);
-			}
 			board->mainx++;
 		}
 		board->mainx = 0;
 		board->mainy++;
 	}
-		ft_putnbr(board->sy);
-		ft_putchar(' ');
-		ft_putnbr(board->sx);
-		ft_putchar('\n');
 	return (1);
 }
 /*
@@ -252,9 +231,10 @@ int	data(t_map *board, t_piece *piece)
 		return (0);
 	if (!get_board(board))
 		return (0);
-	if (!get_piece(piece))
+	if (!get_piece(piece, board))
 		return (0);
-	create_heat_map(board);
+	if (!create_heat_map(board, piece))
+		return (0);
 	init_heat(board);
 	do_heat(board);
 	count_score(board,piece);
@@ -272,6 +252,7 @@ int main()
 	{
 		if(!data(&board, &piece))
 			return (0);
+		print_cords(board.sx, board.sy);
 		free_data(&board, &piece);
 	}
 	return (0);

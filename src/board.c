@@ -6,7 +6,7 @@
 /*   By: joivanau <joivanau@hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/20 22:35:26 by joivanau          #+#    #+#             */
-/*   Updated: 2022/03/01 12:44:58 by joivanau         ###   ########.fr       */
+/*   Updated: 2022/03/01 17:09:29 by joivanau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	get_board_size(t_map *board)
 		|| !ft_isdigit(board_size[2][0]) || board_size[3])
 	{
 		ft_free2d((void *)board_size);
-		return (free_data_error(board, NULL, "wrong board size\n"));
+		return (free_data_error(board, NULL, "Wrong board size\n"));
 	}
 	board->h = ft_atoi(board_size[1]);
 	board->w = ft_atoi(board_size[2]);
@@ -47,7 +47,7 @@ int	get_board(t_map *board)
 	ft_strdel(&line);
 	board->map = ft_memalloc(sizeof(char *) * (board->h + 1));
 	if (!board->map)
-		return (0);
+		return (free_data_error(board, NULL, "Allocation failed\n"));
 	i = 0;
 	while (i < board->h)
 	{

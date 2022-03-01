@@ -1,31 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   additional.c                                       :+:      :+:    :+:   */
+/*   ft_free2d.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: joivanau <joivanau@hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/02/20 22:36:29 by joivanau          #+#    #+#             */
-/*   Updated: 2022/03/01 18:01:13 by joivanau         ###   ########.fr       */
+/*   Created: 2022/03/01 17:17:18 by joivanau          #+#    #+#             */
+/*   Updated: 2022/03/01 17:17:25 by joivanau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "filler.h"
+#include "libft.h"
 
-void	ft_free_tab_char(char ***tab)
+void	ft_free2d(void **str)
 {
 	int	i;
 
 	i = 0;
-	while ((*tab)[i] != NULL)
-		free((*tab)[i++]);
-	free(*tab);
-}
-
-void	print_cords(int x, int y)
-{
-	ft_putnbr(y);
-	ft_putchar(' ');
-	ft_putnbr(x);
-	ft_putchar('\n');
+	if (!str)
+		return ;
+	while (str[i])
+	{
+		free(str[i]);
+		str[i] = NULL;
+		i++;
+	}
+	free(str);
+	str = NULL;
 }
