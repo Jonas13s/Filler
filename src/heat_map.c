@@ -6,7 +6,7 @@
 /*   By: joivanau <joivanau@hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/21 00:41:48 by joivanau          #+#    #+#             */
-/*   Updated: 2022/02/27 20:13:26 by joivanau         ###   ########.fr       */
+/*   Updated: 2022/02/28 22:40:55 by joivanau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,26 +39,21 @@ void	do_heat(t_map *board)
 	int	i;
 
 	i = 1;
-	x = 0;
-	y = 0;
-	while(i < board->w)
+	while (i < board->w)
 	{
-		while(y < board->h)
+		y = 0;
+		x = 0;
+		while (y < board->h)
 		{
-			while(x < board->w)
+			while (x < board->w)
 			{
 				if (board->heat_map[y][x] == DE)
-				{
 					fill_heat(board, x, y, i);
-					//printf("%d\n", board->heat_map[y][x]);
-				}
 				x++;
 			}
 			x = 0;
 			y++;
 		}
-		y = 0;
-		x = 0;
 		i++;
 	}
 }
@@ -90,9 +85,9 @@ void	init_heat(t_map *board)
 
 	x = 0;
 	y = 0;
-	while(y < board->h)
+	while (y < board->h)
 	{
-		while(x < board->w)
+		while (x < board->w)
 		{
 			if (board->heat_map[y][x] == DE)
 				init_heat_map(board, x, y);
@@ -103,17 +98,17 @@ void	init_heat(t_map *board)
 	}
 }
 
-
 static int	filling_heat_map(t_map *board, int y)
 {
 	int	x;
 
 	x = 0;
-	while(x < board->w)
+	while (x < board->w)
 	{
 		if (board->map[y][x] == '.')
 			board->heat_map[y][x] = DE;
-		if (board->map[y][x] == board->my_letter || board->map[y][x] == ft_tolower(board->my_letter))
+		if (board->map[y][x] == board->my_letter ||
+			board->map[y][x] == ft_tolower(board->my_letter))
 			board->heat_map[y][x] = ME;
 		if (board->map[y][x] == board->enem_letter)
 			board->heat_map[y][x] = ENEM;
@@ -130,7 +125,7 @@ int	create_heat_map(t_map *board)
 	board->heat_map = ft_memalloc(sizeof(char *) * (board->h + 1));
 	if (!board)
 		return (0);
-	while(y < board->h)
+	while (y < board->h)
 	{
 		board->heat_map[y] = ft_memalloc(sizeof(char *) * (board->w + 1));
 		if (!board->heat_map[y])

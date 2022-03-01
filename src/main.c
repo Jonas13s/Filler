@@ -250,9 +250,10 @@ int	data(t_map *board, t_piece *piece)
 		which_player(board);
 	if (!board->my_letter)
 		return (0);
-	if(!get_board(board))
+	if (!get_board(board))
 		return (0);
-	get_piece(piece);
+	if (!get_piece(piece))
+		return (0);
 	create_heat_map(board);
 	init_heat(board);
 	do_heat(board);
@@ -271,12 +272,7 @@ int main()
 	{
 		if(!data(&board, &piece))
 			return (0);
-		free_piece(&piece);
-		free_heat_map(&board);
-		free_map(&board);
+		free_data(&board, &piece);
 	}
-	char *line;
-	get_next_line(0, &line);
-	ft_strdel(&line);
 	return (0);
 }

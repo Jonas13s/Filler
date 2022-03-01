@@ -6,7 +6,7 @@
 /*   By: joivanau <joivanau@hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/20 22:36:29 by joivanau          #+#    #+#             */
-/*   Updated: 2022/02/27 20:32:44 by joivanau         ###   ########.fr       */
+/*   Updated: 2022/03/01 12:43:57 by joivanau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,13 +37,14 @@ void	free_heat_map(t_map *f)
 	int	i;
 
 	i = 0;
-	while(i < f->h)
+	while (i < f->h)
 	{
 		if (f->heat_map[i])
 			free(f->heat_map[i]);
 		i++;
 	}
-	free(f->heat_map);
+	if (f->heat_map)
+		free(f->heat_map);
 }
 
 void	free_map(t_map *f)
@@ -51,13 +52,14 @@ void	free_map(t_map *f)
 	int	i;
 
 	i = 0;
-	while(i < f->h)
+	while (i < f->h)
 	{
 		if (f->map[i])
 			free(f->map[i]);
 		i++;
 	}
-	free(f->map);
+	if (f->map)
+		free(f->map);
 }
 
 void	free_piece(t_piece *f)
@@ -65,13 +67,14 @@ void	free_piece(t_piece *f)
 	int	i;
 
 	i = 0;
-	while(i < f->h)
+	while (i < f->h)
 	{
 		if (f->pc[i])
 			free(f->pc[i]);
 		i++;
 	}
-	free(f->pc);
+	if (f->pc)
+		free(f->pc);
 }
 
 void	init_struct_piece(t_piece *f)
@@ -82,9 +85,9 @@ void	init_struct_piece(t_piece *f)
 	f->star = 0;
 }
 
-void		ft_free_tab_char(char ***tab)
+void	ft_free_tab_char(char ***tab)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while ((*tab)[i] != NULL)
@@ -97,9 +100,9 @@ void	ft_free2d(void **str)
 	int	i;
 
 	i = 0;
-	if(!str)
-		return;
-	while(str[i])
+	if (!str)
+		return ;
+	while (str[i])
 	{
 		free(str[i]);
 		str[i] = NULL;
@@ -107,6 +110,29 @@ void	ft_free2d(void **str)
 	}
 	free(str);
 	str = NULL;
+}
+
+int	free_data_error(t_map *board, t_piece *piece, char *string)
+{
+	if (piece)
+		if (piece->pc)
+			ft_free2d((void **)piece->pc);
+	if(board)
+	{
+		if (board->map)
+			ft_free2d((void **)board->map);
+		if (board->heat_map)
+			ft_free2d((void **)board->heat_map);
+	}
+	ft_putstr_fd(string, 2);
+	return (0);
+}
+
+void	free_data(t_map *board, t_piece *piece)
+{
+	ft_free2d((void **)board->map);
+	ft_free2d((void **)board->heat_map);
+	ft_free2d((void **)piece->pc);
 }
 
 int	ft_str_valid(char *str, char *symbols)
