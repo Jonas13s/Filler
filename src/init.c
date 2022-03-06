@@ -6,25 +6,11 @@
 /*   By: joivanau <joivanau@hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/01 17:09:44 by joivanau          #+#    #+#             */
-/*   Updated: 2022/03/02 01:53:04 by joivanau         ###   ########.fr       */
+/*   Updated: 2022/03/06 23:52:32 by joivanau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "filler.h"
-
-int	ft_str_valid(char *str, char *symbols)
-{
-	size_t	i;
-
-	i = 0;
-	while (str[i])
-	{
-		if (!ft_strchr(symbols, str[i]))
-			return (0);
-		i++;
-	}
-	return (1);
-}
 
 static void	init_heat_map(t_map *b, int x, int y)
 {
@@ -51,18 +37,15 @@ void	init_heat(t_map *board)
 	int	x;
 	int	y;
 
-	x = 0;
-	y = 0;
-	while (y < board->h)
+	y = -1;
+	while (++y < board->h)
 	{
-		while (x < board->w)
+		x = -1;
+		while (++x < board->w)
 		{
 			if (board->heat_map[y][x] == DE)
 				init_heat_map(board, x, y);
-			x++;
 		}
-		x = 0;
-		y++;
 	}
 }
 

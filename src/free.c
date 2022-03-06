@@ -6,18 +6,11 @@
 /*   By: joivanau <joivanau@hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/01 17:16:21 by joivanau          #+#    #+#             */
-/*   Updated: 2022/03/01 17:57:51 by joivanau         ###   ########.fr       */
+/*   Updated: 2022/03/07 01:03:41 by joivanau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "filler.h"
-
-void	free_data(t_map *board, t_piece *piece)
-{
-	ft_free2d((void **)board->map);
-	ft_free2d((void **)board->heat_map);
-	ft_free2d((void **)piece->pc);
-}
 
 int	free_data_error(t_map *board, t_piece *piece, char *string)
 {
@@ -47,7 +40,10 @@ void	free_heat_map(t_map *f)
 		i++;
 	}
 	if (f->heat_map)
+	{
 		free(f->heat_map);
+		f->heat_map = NULL;
+	}
 }
 
 void	free_map(t_map *f)
@@ -62,7 +58,10 @@ void	free_map(t_map *f)
 		i++;
 	}
 	if (f->map)
+	{
 		free(f->map);
+		f->map = NULL;
+	}
 }
 
 void	free_piece(t_piece *f)
@@ -77,5 +76,15 @@ void	free_piece(t_piece *f)
 		i++;
 	}
 	if (f->pc)
+	{
 		free(f->pc);
+		f->pc = NULL;
+	}
+}
+
+void	free_data(t_map *board, t_piece *piece)
+{
+	free_heat_map(board);
+	free_map(board);
+	free_piece(piece);
 }

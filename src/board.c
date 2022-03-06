@@ -6,7 +6,7 @@
 /*   By: joivanau <joivanau@hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/20 22:35:26 by joivanau          #+#    #+#             */
-/*   Updated: 2022/03/01 17:09:29 by joivanau         ###   ########.fr       */
+/*   Updated: 2022/03/07 01:02:55 by joivanau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,11 +45,12 @@ int	get_board(t_map *board)
 	if (get_next_line(0, &line) <= 0)
 		return (0);
 	ft_strdel(&line);
-	board->map = ft_memalloc(sizeof(char *) * (board->h + 1));
+	if (!board->map)
+		board->map = ft_memalloc(sizeof(char *) * (board->h + 1));
 	if (!board->map)
 		return (free_data_error(board, NULL, "Allocation failed\n"));
-	i = 0;
-	while (i < board->h)
+	i = -1;
+	while (++i < board->h)
 	{
 		if (get_next_line(0, &line) <= 0)
 			return (free_data_error(board, NULL, "GNL failed\n"));
@@ -59,7 +60,6 @@ int	get_board(t_map *board)
 			return (free_data_error(board, NULL, "Board lines not right\n"));
 		if (!ft_str_valid(board->map[i], ".oOxX"))
 			return (free_data_error(board, NULL, "Wrong symbols in map\n"));
-		i++;
 	}
 	return (1);
 }

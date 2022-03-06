@@ -6,7 +6,7 @@
 /*   By: joivanau <joivanau@hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/20 23:51:06 by joivanau          #+#    #+#             */
-/*   Updated: 2022/03/02 01:16:14 by joivanau         ###   ########.fr       */
+/*   Updated: 2022/03/07 01:03:21 by joivanau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ Has one flaw that if width has at the end has symbols it wont register them
 and it will be considered as good piece
 Using 'ft_strsplit' I split given data and then I just pass
 numbers to 'ft_atoi' which assigns numbers to struct	*/
-int	get_piece_wh(t_piece *piece, t_map *board)
+static int	get_piece_wh(t_piece *piece, t_map *board)
 {
 	char	**piece_size;
 	char	*line;
@@ -43,14 +43,15 @@ int	get_piece_wh(t_piece *piece, t_map *board)
 /*	After succesfully reading first line which has width and height
 I read stdout same amount of time that was piece height was given
 if piece is wrong I call it as wrong piece considering:'width, symbols'	*/
-int	read_piece(t_piece *piece, t_map *board)
+static int	read_piece(t_piece *piece, t_map *board)
 {
 	int		i;
 
 	if (piece->h == 0 || piece->w == 0)
-		return (free_data_error(board, NULL, "Piece has invalid width or height\n"));
+		return (free_data_error(board, NULL, "Piece has invalid W or H\n"));
 	i = 0;
-	piece->pc = ft_memalloc(sizeof(char *) * (piece->h + 2));
+	if (!piece->pc)
+		piece->pc = ft_memalloc(sizeof(char *) * (piece->h + 2));
 	if (!piece->pc)
 		return (free_data_error(board, NULL, "Allocation failed\n"));
 	while (i < piece->h)
@@ -106,19 +107,22 @@ int	piece_search(t_piece *piece, int *y, int *x)
 		piece->star = 1;
 		return (1);
 	}
-	while (*y < piece->h)
+	else
 	{
-		while (*x < piece->w)
+		while (*y < piece->h)
 		{
-			if (piece->pc && piece->pc[*y][*x] == '*')
+			while (*x < piece->w)
 			{
-				piece->star = 1;
-				return (1);
+				if (piece->pc && piece->pc[*y][*x] == '*')
+				{
+					piece->star = 1;
+					return (1);
+				}
+				(*x)++;
 			}
-			(*x)++;
+			*x = 0;
+			(*y)++;
 		}
-		*x = 0;
-		(*y)++;
 	}
 	return (0);
 }
