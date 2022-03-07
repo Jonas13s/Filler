@@ -6,7 +6,7 @@
 /*   By: joivanau <joivanau@hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/03 01:58:05 by joivanau          #+#    #+#             */
-/*   Updated: 2022/03/07 01:16:02 by joivanau         ###   ########.fr       */
+/*   Updated: 2022/03/07 01:24:48 by joivanau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,6 @@ int	result_forward(t_map *b, t_piece *piece, int *score)
 
 /* if counted score is less than current score
 we assign it because less score means it's closer to enemy*/
-
 int	scoring(t_map *board, t_piece *piece)
 {
 	int	score;

@@ -6,14 +6,13 @@
 /*   By: joivanau <joivanau@hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/20 03:59:59 by joivanau          #+#    #+#             */
-/*   Updated: 2022/03/06 23:41:09 by joivanau         ###   ########.fr       */
+/*   Updated: 2022/03/07 01:35:11 by joivanau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FILLER_H
 # define FILLER_H
 
-# include <stdio.h>
 # include <libft.h>
 
 # define DE 0

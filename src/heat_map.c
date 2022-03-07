@@ -6,7 +6,7 @@
 /*   By: joivanau <joivanau@hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/21 00:41:48 by joivanau          #+#    #+#             */
-/*   Updated: 2022/03/06 23:51:38 by joivanau         ###   ########.fr       */
+/*   Updated: 2022/03/07 01:59:48 by joivanau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,22 +38,6 @@ static void	fill_heat(t_map *b, int x, int y, int i)
 their value by using fill_heat()
 DE = empty box	*/
 
-static int	filling_heat_map_later(t_map *board, int y)
-{
-	int	x;
-
-	x = -1;
-	while (++x < board->w)
-	{
-		if (board->map[y][x] == board->my_letter ||
-				board->map[y][x] == ft_tolower(board->my_letter))
-			board->heat_map[y][x] = ME;
-		if (board->map[y][x] == board->enem_letter)
-			board->heat_map[y][x] = ENEM;
-	}
-	return (1);
-}
-
 void	do_heat(t_map *board)
 {
 	int	x;
@@ -74,9 +58,6 @@ void	do_heat(t_map *board)
 			}
 		}
 	}
-	y = -1;
-	while (++y < board->h)
-		filling_heat_map_later(board, y);
 }
 
 /*	Filling heat_map if it's dot its gonna be DE(empty)
@@ -92,7 +73,7 @@ static int	filling_heat_map(t_map *board, int y)
 			board->heat_map[y][x] = DE;
 		if (board->map[y][x] == board->my_letter ||
 				board->map[y][x] == ft_tolower(board->my_letter))
-			board->heat_map[y][x] = DE;
+			board->heat_map[y][x] = ME;
 		if (board->map[y][x] == board->enem_letter)
 			board->heat_map[y][x] = ENEM;
 	}
