@@ -20,14 +20,13 @@ FLAGS = -Wall -Wextra -Werror
 all: $(NAME)
 
 $(NAME): $(LIBFT)
-	@cc -c $(FLAGS) $(addprefix $(SRC_DIR), $(SRCS)) $(INCLUDES)
+	@gcc -c $(FLAGS) $(addprefix $(SRC_DIR), $(SRCS)) $(INCLUDES)
 	@mkdir -p $(OBJ_DIR)
 	@mv $(OBJ) $(OBJ_DIR)
-	@cc $(FLAGS) $(addprefix $(OBJ_DIR), $(OBJ)) -o $(NAME) $(LINK)
+	@gcc $(FLAGS) $(addprefix $(OBJ_DIR), $(OBJ)) -o $(NAME) $(LINK)
 	@echo "Compilation done!"
 $(LIBFT):
 	@make -s -C libft
-
 clean: 
 	@make -s -C libft/ clean
 	@rm -rf obj

@@ -6,7 +6,7 @@
 #    By: joivanau <joivanau@hive.fi>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/01 14:55:31 by joivanau          #+#    #+#              #
-#    Updated: 2022/03/03 01:31:46 by joivanau         ###   ########.fr        #
+#    Updated: 2022/03/11 15:14:46 by joivanau         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,22 +23,28 @@ ft_lstdelone.c ft_lstdel.c ft_lstadd.c ft_lstiter.c ft_lstmap.c ft_strlcpy.c ft_
 ft_strisprintable.c ft_isblank.c ft_strisalpha.c ft_calloc.c ft_strupdate.c get_next_line.c\
 ft_free2d.c ft_str_valid.c
 
+SRC = ft_printf.c ft_args.c ft_ischeck.c ft_conv.c ftoa.c assign_values.c
+SRC += print_float.c print_char.c print_string.c print_signedinteger.c
+SRC += print_hex.c print_pointer.c print_octal.c print_unsignedint.c
+
 LIBRARY = $(FILES:.c=.o)
+
+LIBRARY += $(SRC:.c=.o)
+
 OBJ_DIR = obj/
+
 FT_PRINTF_PATH = ft_printf/
+
+FLAGS = -Wall -Wextra -Werror
+
 all: $(NAME)
 
 $(NAME):
-	@cc -Wall -Wextra -Werror -c $(FILES)
-	@ar rc $(NAME) $(LIBRARY)
-	@make -C $(FT_PRINTF_PATH)
-	@rm -rf $(NAME)
-	@mv $(FILES:.c=.o) $(OBJ_DIR)
-	@ar rc $(NAME) $(OBJ_DIR)*.o
+	@gcc $(FLAGS) -c $(addprefix $(FT_PRINTF_PATH), $(SRC)) $(FILES) -I .
+	@mv $(LIBRARY) $(OBJ_DIR)
+	@ar rc $(NAME) $(addprefix $(OBJ_DIR), $(LIBRARY))
 clean:
-	@rm -rf $(LIBRARY)
-	@make -C $(FT_PRINTF_PATH) clean
+	@rm -rf $(addprefix $(OBJ_DIR), $(LIBRARY))
 fclean: clean
 	@rm -rf $(NAME)
-	@make -C $(FT_PRINTF_PATH) fclean
 re: fclean all
