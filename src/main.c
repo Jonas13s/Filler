@@ -6,7 +6,7 @@
 /*   By: joivanau <joivanau@hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 01:00:42 by joivanau          #+#    #+#             */
-/*   Updated: 2022/03/07 01:07:25 by joivanau         ###   ########.fr       */
+/*   Updated: 2022/03/07 14:20:53 by joivanau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 if any of these are wrong it's error
 which_player == 0 it means it was defined which player it is
 */
-int	data(t_map *board, t_piece *piece)
+static int	data(t_map *board, t_piece *piece)
 {
 	if (!board->my_letter)
 		which_player(board);

@@ -6,7 +6,7 @@
 /*   By: joivanau <joivanau@hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/21 00:41:48 by joivanau          #+#    #+#             */
-/*   Updated: 2022/03/07 01:59:48 by joivanau         ###   ########.fr       */
+/*   Updated: 2022/03/07 13:42:42 by joivanau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,26 @@ static void	fill_heat(t_map *b, int x, int y, int i)
 		b->heat_map[y][x] = i + 1;
 }
 
+/*	Filling heat_map if it's dot its gonna be DE(empty)
+or ME(mine) also ENEM(taken) this is only for one row	*/
+static int	filling_heat_map(t_map *board, int y)
+{
+	int	x;
+
+	x = -1;
+	while (++x < board->w)
+	{
+		if (board->map[y][x] == '.')
+			board->heat_map[y][x] = DE;
+		if (board->map[y][x] == board->my_letter ||
+				board->map[y][x] == ft_tolower(board->my_letter))
+			board->heat_map[y][x] = ME;
+		if (board->map[y][x] == board->enem_letter)
+			board->heat_map[y][x] = ENEM;
+	}
+	return (1);
+}
+
 /*	Checking map row by row and increasing
 their value by using fill_heat()
 DE = empty box	*/
@@ -58,26 +78,6 @@ void	do_heat(t_map *board)
 			}
 		}
 	}
-}
-
-/*	Filling heat_map if it's dot its gonna be DE(empty)
-or ME(mine) also ENEM(taken) this is only for one row	*/
-static int	filling_heat_map(t_map *board, int y)
-{
-	int	x;
-
-	x = -1;
-	while (++x < board->w)
-	{
-		if (board->map[y][x] == '.')
-			board->heat_map[y][x] = DE;
-		if (board->map[y][x] == board->my_letter ||
-				board->map[y][x] == ft_tolower(board->my_letter))
-			board->heat_map[y][x] = ME;
-		if (board->map[y][x] == board->enem_letter)
-			board->heat_map[y][x] = ENEM;
-	}
-	return (1);
 }
 
 /*	allocating also filling heat map

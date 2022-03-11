@@ -6,7 +6,7 @@
 /*   By: joivanau <joivanau@hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/08 19:06:25 by joivanau          #+#    #+#             */
-/*   Updated: 2022/02/08 04:36:41 by joivanau         ###   ########.fr       */
+/*   Updated: 2022/03/09 00:05:40 by joivanau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 # define FT_PRINTF_H
 # include "libft.h"
 # include <stdarg.h>
-# include <stdio.h>
 # include <inttypes.h>
 
 # define DIGITS		"0123456789"

@@ -6,13 +6,13 @@
 /*   By: joivanau <joivanau@hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/20 22:35:26 by joivanau          #+#    #+#             */
-/*   Updated: 2022/03/07 01:02:55 by joivanau         ###   ########.fr       */
+/*   Updated: 2022/03/07 14:20:37 by joivanau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "filler.h"
 
-int	get_board_size(t_map *board)
+static int	get_board_size(t_map *board)
 {
 	char	**board_size;
 	char	*line;

@@ -15,21 +15,22 @@ LINK = -L libft -lft
 
 LIBFT = libft/libft.a
 
-FLAGS = -c -Wall -Wextra -Werror
+FLAGS = -Wall -Wextra -Werror
 
 all: $(NAME)
 
 $(NAME): $(LIBFT)
-	@cc $(FLAGS) $(addprefix $(SRC_DIR), $(SRCS)) $(INCLUDES)
-	@mv $(SRCS:.c=.o) $(OBJ_DIR)
-	@cc $(addprefix $(OBJ_DIR), $(OBJ)) -o $(NAME) $(LINK)
+	@cc -c $(FLAGS) $(addprefix $(SRC_DIR), $(SRCS)) $(INCLUDES)
+	@mkdir -p $(OBJ_DIR)
+	@mv $(OBJ) $(OBJ_DIR)
+	@cc $(FLAGS) $(addprefix $(OBJ_DIR), $(OBJ)) -o $(NAME) $(LINK)
 	@echo "Compilation done!"
 $(LIBFT):
 	@make -s -C libft
 
 clean: 
 	@make -s -C libft/ clean
-	@rm -rf obj/*.o
+	@rm -rf obj
 	@echo ".o removed!"
 
 fclean: clean

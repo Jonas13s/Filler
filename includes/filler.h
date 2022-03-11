@@ -6,7 +6,7 @@
 /*   By: joivanau <joivanau@hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/20 03:59:59 by joivanau          #+#    #+#             */
-/*   Updated: 2022/03/07 01:35:11 by joivanau         ###   ########.fr       */
+/*   Updated: 2022/03/07 14:21:32 by joivanau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,6 @@ void	free_map(t_map *f);
 void	free_data(t_map *board, t_piece *piece);
 int		free_data_error(t_map *board, t_piece *piece, char *string);
 /*Board.c*/
-int		get_board_size(t_map *board);
 int		get_board(t_map *board);
 /*init.c*/
 int		which_player(t_map *board);

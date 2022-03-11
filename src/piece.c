@@ -6,7 +6,7 @@
 /*   By: joivanau <joivanau@hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/20 23:51:06 by joivanau          #+#    #+#             */
-/*   Updated: 2022/03/07 01:03:21 by joivanau         ###   ########.fr       */
+/*   Updated: 2022/03/07 14:21:06 by joivanau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ static int	piece_start(t_piece *piece, int *y, int *x)
 	return (1);
 }
 
-/*	seraching if piece has still stars in if and if so returns their cords	*/
+/*	searching if piece has still stars in if and if so returns their cords	*/
 int	piece_search(t_piece *piece, int *y, int *x)
 {
 	if (piece_start(piece, y, x) == 0)
