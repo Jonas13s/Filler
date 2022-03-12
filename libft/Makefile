@@ -6,7 +6,7 @@
 #    By: joivanau <joivanau@hive.fi>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/01 14:55:31 by joivanau          #+#    #+#              #
-#    Updated: 2022/03/11 15:14:46 by joivanau         ###   ########.fr        #
+#    Updated: 2022/03/12 22:15:07 by joivanau         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,10 +41,11 @@ all: $(NAME)
 
 $(NAME):
 	@gcc $(FLAGS) -c $(addprefix $(FT_PRINTF_PATH), $(SRC)) $(FILES) -I .
+	@mkdir -p $(OBJ_DIR)
 	@mv $(LIBRARY) $(OBJ_DIR)
 	@ar rc $(NAME) $(addprefix $(OBJ_DIR), $(LIBRARY))
 clean:
-	@rm -rf $(addprefix $(OBJ_DIR), $(LIBRARY))
+	@rm -rf $(OBJ_DIR)
 fclean: clean
 	@rm -rf $(NAME)
 re: fclean all
