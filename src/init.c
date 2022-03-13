@@ -6,7 +6,7 @@
 /*   By: joivanau <joivanau@hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/01 17:09:44 by joivanau          #+#    #+#             */
-/*   Updated: 2022/03/06 23:52:32 by joivanau         ###   ########.fr       */
+/*   Updated: 2022/03/13 22:52:50 by joivanau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,8 @@ int	which_player(t_map *board)
 
 	if (get_next_line(0, &line) <= 0)
 		return (free_data_error(NULL, NULL, "Allocation failed\n"));
+	if (!ft_strchr(line, 'p'))
+		return (free_data_error(NULL, NULL, "No player detected\n"));
 	pos = ft_strchr(line, 'p') + 1;
 	c = *pos;
 	ft_strdel(&line);
@@ -66,13 +68,11 @@ int	which_player(t_map *board)
 	{
 		board->my_letter = 'O';
 		board->enem_letter = 'X';
-		return (1);
 	}
 	else if (c == '2')
 	{
 		board->my_letter = 'X';
 		board->enem_letter = 'O';
-		return (1);
 	}
 	else
 		return (free_data_error(NULL, NULL, "No player detected\n"));
